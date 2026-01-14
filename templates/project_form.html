@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% if project %}
+    {% set page_title = "Edit Project" %}
+{% else %}
+    {% set page_title = "Create Project" %}
+{% endif %}
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <h2>{{ page_title }}</h2>
+    <form class="form" method="post" enctype="multipart/form-data">
+        <label>Project Image</label>
+        <input type="file" name="image" accept="image/*">
+
+        <label>Title
+            <input type="text" name="title" required
+                   value="{{ project.title if project else '' }}">
+        </label>
+
+        <label>Subtitle
+            <input type="text" name="subtitle"
+                   value="{{ project.subtitle if project else '' }}">
+        </label>
+
+        <label>Description
+            <textarea name="description" rows="4">{{ project.description if project else '' }}</textarea>
+        </label>
+
+        <label>Tech Stack
+            <input type="text" name="tech_stack"
+                   placeholder="Go, Flask, Docker, SQL"
+                   value="{{ project.tech_stack if project else '' }}">
+        </label>
+
+        <label>GitHub URL
+            <input type="url" name="github_url"
+                   value="{{ project.github_url if project else '' }}">
+        </label>
+
+        <label>Live URL
+            <input type="url" name="live_url"
+                   value="{{ project.live_url if project else '' }}">
+        </label>
+
+        <button class="btn" type="submit">Save</button>
+        <a class="btn secondary" href="{{ url_for('admin_projects') }}">Cancel</a>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Education</h2>
+
+<a href="{{ url_for('create_education') }}" class="btn">+ Add Education</a>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Degree</th>
+      <th>Institute</th>
+      <th>Years</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for edu in education %}
+    <tr>
+      <td>{{ edu.degree }}</td>
+      <td>{{ edu.institute }}</td>
+      <td>{{ edu.start_year }} — {{ edu.end_year or "Present" }}</td>
+      <td>
+        <a href="{{ url_for('edit_education', edu_id=edu.id) }}">Edit</a>
+
+        <form method="POST" action="{{ url_for('delete_education', edu_id=edu.id) }}" style="display:inline;">
+          <button type="submit" onclick="return confirm('Delete this entry?')">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No education added yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

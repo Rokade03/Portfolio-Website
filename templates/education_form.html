@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ "Edit Education" if edu else "Add Education" }}</h2>
+
+<form method="POST" enctype="multipart/form-data" class="admin-form">
+
+  <label>Degree *</label>
+  <input type="text" name="degree" required value="{{ edu.degree if edu else '' }}">
+
+  <label>Degree Type</label>
+  <input type="text" name="degree_type" placeholder="Bachelor's / Master's / High-School" value="{{edu.degree_type if edu else ''}}">
+
+  <label>Institute *</label>
+  <input type="text" name="institute" required value="{{ edu.institute if edu else '' }}">
+
+  <label>Institute Website</label>
+  <input type="url" name="institute_url" value="{{ edu.institute_url if edu else '' }}">
+
+  <label>Start Year</label>
+  <input type="text" name="start_year" value="{{ edu.start_year if edu else '' }}">
+
+  <label>End Year</label>
+  <input type="text" name="end_year" value="{{ edu.end_year if edu else '' }}">
+
+  <label>Location</label>
+  <input type="text" name="location" value="{{ edu.location if edu else '' }}">
+
+  <label>Description</label>
+  <textarea name="description">{{ edu.description if edu else '' }}</textarea>
+
+  <label>Institute Logo (PNG)</label>
+  <input type="file" name="icon" accept="image/*">
+
+  {% if edu and edu.icon %}
+    <p>Current Logo:</p>
+    <img src="{{ url_for('static', filename='uploads/education/' + edu.icon) }}" style="width:52px;">
+  {% endif %}
+
+  <button type="submit" class="btn">{{ "Update" if edu else "Create" }}</button>
+</form>
+
+{% endblock %}

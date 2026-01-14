@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% if cert %}
+    {% set page_title = "Edit Certification" %}
+{% else %}
+    {% set page_title = "Create Certification" %}
+{% endif %}
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <h2>{{ page_title }}</h2>
+    <form class="form" method="post">
+        <label>Name
+            <input type="text" name="name" required
+                   value="{{ cert.name if cert else '' }}">
+        </label>
+
+        <label>Issuer
+            <input type="text" name="issuer"
+                   value="{{ cert.issuer if cert else '' }}">
+        </label>
+
+        <label>Date Obtained
+            <input type="text" name="date_obtained"
+                   placeholder="e.g. Jun 2024"
+                   value="{{ cert.date_obtained if cert else '' }}">
+        </label>
+
+        <label>Credential URL
+            <input type="url" name="credential_url"
+                   value="{{ cert.credential_url if cert else '' }}">
+        </label>
+
+        <button class="btn" type="submit">Save</button>
+        <a class="btn secondary" href="{{ url_for('admin_certifications') }}">Cancel</a>
+    </form>
+</section>
+{% endblock %}

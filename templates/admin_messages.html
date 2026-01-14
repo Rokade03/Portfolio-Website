@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Admin | Messages{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <h2>Contact Messages</h2>
+    </div>
+
+    <div class="messages-container">
+        {% for msg in messages %}
+        
+        <div class="message-card">
+            <div class="message-header">
+                <span class="message-email">{{ msg.email }}</span>
+                <span class="message-date">
+                    {{ msg.created_at.strftime("%Y-%m-%d %H:%M") }}
+                </span>
+            </div>
+
+            <div class="message-body">
+                {{ msg.message }}
+            </div>
+
+            <form action="{{ url_for('delete_message', msg_id=msg.id) }}"
+                  method="POST"
+                  onsubmit="return confirm('Delete this message?');">
+                <button class="delete-btn">Delete</button>
+            </form>
+        </div>
+
+        {% else %}
+        <p>No messages yet.</p>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}

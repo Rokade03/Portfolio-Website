@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+{% block title %}Admin | Portfolio{% endblock %}
+{% block content %}
+
+<section class="section">
+    <h2>Admin Panel</h2>
+    <div class="admin-grid">
+        <a class="admin-card" href="{{ url_for('admin_projects') }}">Manage Projects</a>
+        <a class="admin-card" href="{{ url_for('admin_skills') }}">Manage Skills</a>
+        <a class="admin-card" href="{{ url_for('admin_certifications') }}">Manage Certifications</a>
+        <a class="admin-card" href="{{ url_for('admin_experience') }}">Manage Experience</a>
+        <a class="admin-card" href="{{ url_for('admin_education') }}">Manage Education</a>
+        <a class="admin-card" href="{{ url_for('admin_messages') }}">View Messages</a>
+
+    </div>
+</section>
+
+{% endblock %}

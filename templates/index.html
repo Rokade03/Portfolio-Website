@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% block title %}Aayush Rokade | Developer Portfolio{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-text">
+        <h2>Hello World, I'm</h2>
+        <h1><i>Aayush Rokade</i></h1>
+           <span id="element"></span>
+            <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+             <script>
+             var typed = new Typed('#element', {
+                strings: ['A Commited <i><b style="background-color:#00e353;">Coder.</b></i>', 'A Glorious <i><b style="background-color:#00e353;">Gamer.</b></i>', 'A Keen <i><b style="background-color:#00e353;">Karate Player.</b></i>', 'A Fantastic <i><b style="background-color:#00e353;">Friend.</b></i>', 'A True <i><b style="background-color:#00e353;">Traveller.</b></i>'],
+                typeSpeed: 50,
+                loop: true,
+                loopCount: Infinity,
+                cursorChar: '|',
+                autoInsertCss: true,
+            });
+            </script>
+        <div class="hero-actions">
+            <a class="btn btn-resume" href="{{url_for('static', filename = 'files/CV_Aayush_3.pdf')}}" download>
+                My Resume
+            </a>
+
+            <a href="#contact" class="btn btn-connect" data-scroll-to="contact">
+                Let's Connect
+            </a>
+        </div>
+        <p class="hero-desc">
+            A Confident Computer Engineer and a curious problem solver who turns questions into code. With a strong intrest in Technology from 
+            building applications to leveraging AI.
+        </p>
+    </div>
+    <div class="hero-image">
+        <div class="profile-frame">
+        <img src="{{ url_for('static', filename= 'media/picture.png') }}" alt="Aayush" class="profile-img">
+        </div>
+    </div>
+</section>
+
+<div class="main-content">
+<section id="projects" class="section">
+    <h2>About Me</h2>
+            <p><i> " I am a motivated and detail-oriented student with a strong interest in technology, data, and problem-solving. I enjoy turning complex ideas into practical solutions and continuously improving my skills through hands-on projects and real-world applications.
+My experience includes working with programming, data analysis, and research-driven projects, where I focus on writing clean, efficient code and delivering meaningful insights. I value learning, adaptability, and collaboration, and I’m always eager to explore new tools and technologies that help me grow as a professional.
+Currently, I am focused on building a strong technical portfolio while seeking opportunities to apply my knowledge in challenging and impactful environments. " </i></p>
+</section>
+
+
+
+<section id="education" class="section alt">
+  <h2>Education</h2>
+
+  <div class="edu-grid">
+    {% for edu in education %}
+
+    <a class="edu-card"
+       href="{{ edu.institute_url or '#' }}"
+       target="_blank"
+       {% if not edu.institute_url %} onclick="return false;" {% endif %}>
+
+      <div class="edu-header">
+        {% if edu.icon %}
+          <img class="edu-icon"
+               src="{{ url_for('static', filename='uploads/education/' + edu.icon) }}"
+               alt="{{ edu.institute }} logo">
+        {% endif %}
+
+        <div class="edu-title">
+          <h3>{{ edu.degree }}</h3>
+
+          {% if edu.degree_type %}
+            <span class="edu-degree-type">{{ edu.degree_type }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="edu-school">{{ edu.institute }}</p>
+
+      <p class="edu-meta">
+        {{ edu.start_year }} — {{ edu.end_year or "Present" }}
+        {% if edu.location %} | {{ edu.location }}{% endif %}
+      </p>
+
+      {% if edu.description %}
+        <p class="edu-desc">{{ edu.description }}</p>
+      {% endif %}
+
+      {% if edu.institute_url %}
+        <span class="edu-link">Visit Institute ></span>
+      {% endif %}
+    </a>
+
+    {% else %}
+      <p>No education added yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="experience" class="section">
+    <h2>Experience</h2>
+    <div class="exp-timeline">
+        {% for e in experiences %}
+        <details class="exp-item">
+            <summary class="exp-summary">
+                <div class="exp-left">
+                    <div class="exp-role">{{ e.role }}</div>
+                    <div class="exp-company">{{ e.company }}</div>
+                </div>
+
+                <div class="exp-right">
+                    <div class="exp-dates">
+                        {{ e.start_date }} — {{ e.end_date or "Present" }}
+                    </div>
+                    {% if e.location %}
+                        <div class="exp-location">{{ e.location }}</div>
+                    {% endif %}
+                    <span class="exp-chip">Details</span>
+                </div>
+            </summary>
+
+            <div class="exp-body">
+                <p>{{ e.description }}</p>
+            </div>
+        </details>
+        {% else %}
+            <p>No experience added yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="skills" class="section alt">
+  <h2>Skills</h2>
+
+  <div class="skills-panels">
+    {% for category, items in skill_groups.items() %}
+      <div class="skill-panel">
+        <div class="skill-panel-head">
+          <div class="skill-panel-title">
+            <h3>{{ category }}</h3>
+          </div>
+
+          <span class="skill-panel-count">{{ items|length }}</span>
+        </div>
+
+        <div class="skills-grid">
+          {% for s in items %}
+            <div class="skill-card">
+              <div class="skill-name">{{ s.name }}</div>
+              {% if s.level %}
+                <div class="skill-level">{{ s.level }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p>No skills added yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="projects" class="section">
+    <h2>Projects</h2>
+    <div class="card-grid">
+        {% for p in projects %}
+            <a class="card project-card"
+               href="{{ p.live_url or p.github_url or '#' }}"
+               target="_blank"
+               {% if not (p.live_url or p.github_url) %} onclick="return false;" {% endif %}>
+
+        {% if p.image %}
+            <img class="project-img"
+                 src="{{ url_for('static', filename='uploads/projects/' + p.image) }}"
+                 alt="{{ p.title }}">
+        {% endif %}
+
+            <div class="card-body">
+            <h3>{{ p.title }}</h3>
+
+        {% if p.subtitle %}
+            <p class="card-subtitle">{{ p.subtitle }}</p>
+        {% endif %}
+
+            <p>{{ p.description }}</p>
+
+        {% if p.tech_stack %}
+            <h5> Tech Stack: </h5>
+            <p class="tagline">{{ p.tech_stack }}</p>
+        {% endif %}
+
+            <div class="project-cta">
+                <span>View Project →</span>
+            </div>
+            </div>
+            </a>
+        {% else %}
+            <p>No projects yet. Add some from the admin panel.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="certifications" class="section alt">
+  <h2>Certifications</h2>
+
+  <div class="cert-grid">
+    {% for c in certs %}
+      <a class="cert-card" href="{{ c.credential_url }}" target="_blank" rel="n">
+        <div class="cert-head">
+          <div class="cert-title">
+            <span class="cert-dot"></span>
+            <h3>{{ c.name }}</h3>
+          </div>
+
+          {% if c.date_obtained %}
+            <span class="cert-date">{{ c.date_obtained }}</span>
+          {% endif %}
+        </div>
+
+        {% if c.issuer %}
+          <p class="cert-issuer">{{ c.issuer }}</p>
+        {% endif %}
+    </a>
+    {% else %}
+      <p>No certifications yet.</p>
+    {% endfor %}
+    </div>
+</section>
+
+<section id="contact" class="contact-section">
+    <h2>Contact Me</h2>
+
+    <p class="contact-subtext">
+        You can reach me directly at 
+        <a href="mailto:aayushrokade03@gmail.com">aayushrokade03@gmail.com</a>
+        or through this form.
+    </p>
+
+    <form id="contact-form" class="contact-form" method="post" action="{{ url_for('contact') }}">
+        
+        <input 
+            type="email" 
+            name="email" 
+            placeholder="Your email" 
+            class="contact-input" 
+            required
+        >
+
+        <textarea 
+            name="message" 
+            placeholder="Your message" 
+            class="contact-textarea"
+            required
+        ></textarea>
+
+        <button class="contact-btn" type="submit">
+            Submit
+        </button>
+
+        <p id="contact-status" class="contact-status"></p>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Admin | Skills{% endblock %}
+{% block content %}
+
+<section class="section">
+    <div class="section-header">
+        <h2>Skills</h2>
+    </div>
+
+    <form class="form-inline" method="post">
+        <input type="text" name="name" placeholder="Skill name (e.g. Flask)" required>
+        <input type="text" name="level" placeholder="Level (Beginner / Intermediate / Advanced)">
+        <input type="text" name="category" placeholder="Category (e.g. Languages, Frameworks)">
+        <button class="btn" type="submit">Add</button>
+    </form>
+
+    <ul class="skill-list">
+        {% for s in skills %}
+            <li>
+                {{ s.name }} {% if s.level %} — {{ s.level }}{% endif %}
+                <form action="{{ url_for('delete_skill', skill_id=s.id) }}" method="post"
+                      onsubmit="return confirm('Delete this skill?');">
+                    <button class="link danger" type="submit">Delete</button>
+                </form>
+            </li>
+        {% else %}
+            <p>No skills yet.</p>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}

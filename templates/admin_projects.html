@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Admin | Projects{% endblock %}
+{% block content %}
+
+<section class="section">
+    <div class="section-header">
+        <h2>Projects</h2>
+        <a class="btn" href="{{ url_for('create_project') }}">+ Add Project</a>
+    </div>
+    <table class="admin-table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Tech Stack</th>
+            <th>Links</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in projects %}
+            <tr>
+                <td>{{ p.title }}</td>
+                <td>{{ p.tech_stack }}</td>
+                <td>
+                    {% if p.github_url %}<a href="{{ p.github_url }}" target="_blank">GitHub</a>{% endif %}
+                    {% if p.live_url %} | <a href="{{ p.live_url }}" target="_blank">Live</a>{% endif %}
+                </td>
+                <td class="actions">
+                    <a href="{{ url_for('edit_project', project_id=p.id) }}">Edit</a>
+                    <form action="{{ url_for('delete_project', project_id=p.id) }}" method="post"
+                          onsubmit="return confirm('Delete this project?');">
+                        <button type="submit" class="link danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">No projects yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

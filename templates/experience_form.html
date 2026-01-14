@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% if exp %}
+    {% set page_title = "Edit Experience" %}
+{% else %}
+    {% set page_title = "Create Experience" %}
+{% endif %}
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <h2>{{ page_title }}</h2>
+    <form class="form" method="post">
+        <label>Role
+            <input type="text" name="role" required
+                   value="{{ exp.role if exp else '' }}">
+        </label>
+
+        <label>Company
+            <input type="text" name="company" required
+                   value="{{ exp.company if exp else '' }}">
+        </label>
+
+        <label>Start Date
+            <input type="text" name="start_date"
+                   placeholder="e.g. Feb 2025"
+                   value="{{ exp.start_date if exp else '' }}">
+        </label>
+
+        <label>End Date
+            <input type="text" name="end_date"
+                   placeholder="e.g. Present or Jun 2026"
+                   value="{{ exp.end_date if exp else '' }}">
+        </label>
+
+        <label>Location
+            <input type="text" name="location"
+                   value="{{ exp.location if exp else '' }}">
+        </label>
+
+        <label>Description
+            <textarea name="description" rows="4">{{ exp.description if exp else '' }}</textarea>
+        </label>
+
+        <button class="btn" type="submit">Save</button>
+        <a class="btn secondary" href="{{ url_for('admin_experience') }}">Cancel</a>
+    </form>
+</section>
+{% endblock %}
