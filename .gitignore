@@ -1,18 +1,5 @@
-#Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.log
-
-#Virtual Environment
 portfolio_app_env/
 venv/
-.env
-
-#Flask/SQLite
-instance/
 *.db
-
-#OS
-.DS_Store
+.env
+__pycache__/

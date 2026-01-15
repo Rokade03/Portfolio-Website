@@ -9,10 +9,16 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
+db_url = os.environ.get("DATABASE_URL")
 
-# --- DB CONFIG -----------------------------------------------------
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "portfolio.db")
+if db_url:
+    # Render gives postgres://, SQLAlchemy expects postgresql://
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+else:
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "portfolio.db")
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
