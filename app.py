@@ -23,6 +23,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+with app.app_context():
+        db.create_all()
 
 UPLOAD_FOLDER = os.path.join(basedir, "static/uploads/projects")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -413,6 +415,4 @@ def delete_message(msg_id):
 
 # --- MAIN ----------------------------------------------------------
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
