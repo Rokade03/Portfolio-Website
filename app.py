@@ -7,13 +7,14 @@ from datetime import datetime, timezone
 from sqlalchemy.sql import func
 from datetime import datetime
 import os
+import cloudinary
+import cloudinary.uploader
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 db_url = os.environ.get("DATABASE_URL")
 
 if db_url:
-    # Render gives postgres://, SQLAlchemy expects postgresql://
     db_url = db_url.replace("postgres://", "postgresql://", 1)
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 else:
@@ -23,6 +24,22 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+cloudinary.config(
+    cloud_name=os.environ.get("dzz8rvujc"),
+    api_key=os.environ.get("181771522887495"),
+    api_secret=os.environ.get("d54aVRaljrFZP-Nhtyt-aU0dCP8"),
+    secure=True,
+)
+
+def upload_to_cloudinary(file_storage, folder: str) -> str:
+    result = cloudinary.uploader.upload(
+        file_storage,
+        folder=folder,
+        resource_type="image",
+        overwrite=True,
+    )
+    return result["secure_url"]
 
 UPLOAD_FOLDER = os.path.join(basedir, "static/uploads/projects")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -92,6 +109,9 @@ class ContactMessage(db.Model):
 
 
 # --- PUBLIC ROUTES -------------------------------------------------
+if os.environ.get("AUTO_CREATE_TABLES", "1") == 1:
+    with app.app_context():
+        db.create_all()
 @app.route("/")
 def index():
     projects = Project.query.order_by(Project.created_at.desc()).all()
@@ -137,9 +157,8 @@ def create_project():
         image_file = request.files.get("image")
         image_filename = None
 
-        if image_file and image_file.filename != "":
-            image_filename = secure_filename(image_file.filename)
-            image_file.save(os.path.join(app.config["UPLOAD_FOLDER"], image_filename))
+        if image_file and image_file.filename:
+            image_filename = upload_to_cloudinary(image_file, folder="portfolio/projects")
 
         project = Project(
             title=request.form["title"],
@@ -168,15 +187,7 @@ def edit_project(project_id):
         project.live_url = request.form.get("live_url")
         image_file = request.files.get("image")
         if image_file and image_file.filename:
-            if project.image:
-                old_path = os.path.join(app.config["UPLOAD_FOLDER"], project.image)
-                if os.path.exists(old_path):
-                    os.remove(old_path)
-
-            ext = os.path.splitext(image_file.filename)[1].lower() 
-            new_filename = f"{uuid4().hex}{ext}" 
-            image_file.save(os.path.join(app.config["UPLOAD_FOLDER"], new_filename))
-            project.image = new_filename
+            project.image = upload_to_cloudinary(image_file, folder="portfolio/projects")
         db.session.commit()
         return redirect(url_for("admin_projects"))
     return render_template("project_form.html", project=project)
@@ -228,9 +239,7 @@ def create_education():
         icon_filename = None
 
         if icon_file and icon_file.filename:
-            ext = os.path.splitext(icon_file.filename)[1].lower()
-            icon_filename = f"{uuid4().hex}{ext}"
-            icon_file.save(os.path.join(app.config["EDU_ICON_FOLDER"], icon_filename))
+            icon_filename = upload_to_cloudinary(icon_file, folder="portfolio/education")
 
         edu = Education(
             degree=request.form["degree"],
@@ -267,15 +276,7 @@ def edit_education(edu_id):
 
         icon_file = request.files.get("icon")
         if icon_file and icon_file.filename:
-            if edu.icon:
-                old_path = os.path.join(app.config["EDU_ICON_FOLDER"], edu.icon)
-                if os.path.exists(old_path):
-                    os.remove(old_path)
-
-            ext = os.path.splitext(icon_file.filename)[1].lower()
-            icon_filename = f"{uuid4().hex}{ext}"
-            icon_file.save(os.path.join(app.config["EDU_ICON_FOLDER"], icon_filename))
-            edu.icon = icon_filename
+            edu.icon = upload_to_cloudinary(icon_file, folder="portfolio/education")
 
         db.session.commit()
         return redirect(url_for("admin_education"))
@@ -413,6 +414,10 @@ def delete_message(msg_id):
 
 # --- MAIN ----------------------------------------------------------
 if __name__ == "__main__":
+<<<<<<< HEAD
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+=======
+    app.run(debug=True)
+>>>>>>> 9e54203 (For Cloudinary and Supabase)

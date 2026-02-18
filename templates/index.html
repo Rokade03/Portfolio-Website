@@ -64,7 +64,7 @@ Currently, I am focused on building a strong technical portfolio while seeking o
       <div class="edu-header">
         {% if edu.icon %}
           <img class="edu-icon"
-               src="{{ url_for('static', filename='uploads/education/' + edu.icon) }}"
+               src="{{ edu.icon }}"
                alt="{{ edu.institute }} logo">
         {% endif %}
 
@@ -173,7 +173,7 @@ Currently, I am focused on building a strong technical portfolio while seeking o
 
         {% if p.image %}
             <img class="project-img"
-                 src="{{ url_for('static', filename='uploads/projects/' + p.image) }}"
+                 src="{{ p.image }}"
                  alt="{{ p.title }}">
         {% endif %}
 
