@@ -414,10 +414,6 @@ def delete_message(msg_id):
 
 # --- MAIN ----------------------------------------------------------
 if __name__ == "__main__":
-<<<<<<< HEAD
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-=======
-    app.run(debug=True)
->>>>>>> 9e54203 (For Cloudinary and Supabase)
