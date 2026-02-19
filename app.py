@@ -26,9 +26,9 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 cloudinary.config(
-    cloud_name=os.environ.get("dzz8rvujc"),
-    api_key=os.environ.get("181771522887495"),
-    api_secret=os.environ.get("d54aVRaljrFZP-Nhtyt-aU0dCP8"),
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
     secure=True,
 )
 
