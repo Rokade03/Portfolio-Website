@@ -17,8 +17,4 @@ tomli==2.3.0
 typing_extensions==4.15.0
 Werkzeug==3.1.4
 zipp==3.23.0
-<<<<<<< HEAD
-psycopg2-binary
-=======
 cloudinary==1.41.0
->>>>>>> 9e54203 (For Cloudinary and Supabase)
