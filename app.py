@@ -109,9 +109,10 @@ class ContactMessage(db.Model):
 
 
 # --- PUBLIC ROUTES -------------------------------------------------
-if os.environ.get("AUTO_CREATE_TABLES", "1") == 1:
+if os.environ.get("AUTO_CREATE_TABLES", "1") == "1":
     with app.app_context():
         db.create_all()
+        
 @app.route("/")
 def index():
     projects = Project.query.order_by(Project.created_at.desc()).all()
