@@ -1268,6 +1268,10 @@ textarea {
     .hero-text {
         margin-top: 10px;
     }
+    
+    .hero-text h1 {
+      margin-top: -15px;
+    }
 
     .hero-desc{
         color: #000;
@@ -1284,7 +1288,9 @@ textarea {
     .top-nav {
         top: 20px;
         margin-top: 4vb;
-        padding: 12px 5vw;
+        margin-left: 50px;
+        margin-right: 50px;
+        padding: 12px 4vw;
         position: sticky;
         z-index: 100;
     }
